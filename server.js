@@ -6,15 +6,21 @@ const mongoose = require('mongoose');
 
 const PORT = process.env.PORT || 3000;
 
-// connects to a database
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => {
-        console.log('Connected to MongoDB Atlas');
-    })
-    .catch((error) => {
-        console.error('MongoDB connection error:', error);
-        process.exit(1);
-    });
+const connectDB = require('./db'); // Import your connection function
+
+// Database connection middleware
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        console.error('Database connection failed:', error);
+        res.status(500).json({ 
+            error: 'Database connection failed',
+            message: 'Please try again later'
+        });
+    }
+});
 
 // Define the Sticky Set schema
 const stickySetSchema = new mongoose.Schema({
