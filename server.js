@@ -249,3 +249,5 @@ app.use((req, res) => {
 app.listen(PORT, () => {
     console.log(`Anonymous Stickies API Server running on http://localhost:${PORT}`);
 });
+// Export for Vercel (REQUIRED)
+module.exports = app;
